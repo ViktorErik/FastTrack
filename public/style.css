@@ -6,6 +6,9 @@ header {
     color: whitesmoke;
 }
 
+body {
+    margin-left: 5%;
+}
 /*
 #exercise {
     color: azure;
@@ -22,14 +25,17 @@ header {
     margin: 0px;
 }
 
-body {
-    margin-left: 5%;
-}
 
-.exerciseClass {
-    width: 100%;
+#exerciseContainer > div {
+    width: 50%;
+    margin-top: 2%;
     display: flex;
     flex-direction: column;
+}
+
+/* Every component in an exercise */
+#exerciseContainer > div > input, #exerciseContainer > div > button {
+    height: 2em;
 }
 
 .exercise {
@@ -43,4 +49,12 @@ body {
 
 .exerciseComponent {
     height: 2em; /* 2x storleken på fonten */
+}
+
+#setBlueprint {
+    display: none;
+}
+
+#exerciseBlueprint {
+    display: none;
 }
