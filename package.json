@@ -1,4 +1,7 @@
 {
     "type": "module",
-    "homepage": "https://viktorerik.github.io/FastTrack"
+    "homepage": "https://viktorerik.github.io/FastTrack",
+    "dependencies": {
+        "firebase": "^11.6.0"
+    }
 }

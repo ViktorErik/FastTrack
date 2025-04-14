@@ -1,4 +1,47 @@
+
 import { Exercise } from "./Exercise.js";
+
+
+
+
+/*
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { collection, addDoc, getFirestore } from "firebase/firestore";
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyC9G6Aky0LRTMj6rnpQFFCVeZfw5SA4SlM",
+  authDomain: "fasttrack-69875.firebaseapp.com",
+  projectId: "fasttrack-69875",
+  storageBucket: "fasttrack-69875.firebasestorage.app",
+  messagingSenderId: "14126042112",
+  appId: "1:14126042112:web:35d898ba9a64ab0e1d5ce5",
+  measurementId: "G-Q06R30V83M"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+const db = getFirestore(app);
+
+try {
+  const docRef = await addDoc(collection(db, "users"), {
+    first: "Ada",
+    last: "Lovelace",
+    born: 1815
+  });
+  console.log("Document written with ID: ", docRef.id);
+} catch (e) {
+  console.error("Error adding document: ", e);
+}
+  */
+
+
+
+
 
 // Load in exercise data n shi like that here prolly
 
