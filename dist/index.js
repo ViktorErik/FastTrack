@@ -1,8 +1,9 @@
 import { Exercise } from "./Exercise.js";
+// Load in exercise data n shi like that here prolly
 let exerciseIndex = 0;
-var exercises = new Array;
+var exercises = [];
 const exerciseSets = {};
-// exerciseSets.set(new Exercise(), new Array)
+const nameLength = 50;
 // Add global event listeners here
 document.addEventListener("DOMContentLoaded", () => {
     var _a;
@@ -27,12 +28,20 @@ function createNewExercise() {
                 const muscleInput = newExerciseDiv.querySelector("#muscleInput");
                 const exerciseButton = newExerciseDiv.querySelector("#exerciseButton");
                 nameInput === null || nameInput === void 0 ? void 0 : nameInput.addEventListener("input", () => {
-                    updateExerciseData(+newExerciseDiv.id, nameInput.value, muscleInput === null || muscleInput === void 0 ? void 0 : muscleInput.value);
-                    if (exerciseButton)
-                        exerciseButton.textContent = nameInput.value;
+                    if (nameInput.value.length <= nameLength) {
+                        updateExerciseData(+newExerciseDiv.id, nameInput.value, muscleInput === null || muscleInput === void 0 ? void 0 : muscleInput.value);
+                        if (exerciseButton)
+                            exerciseButton.textContent = nameInput.value;
+                    }
+                    else {
+                        if (exerciseButton === null || exerciseButton === void 0 ? void 0 : exerciseButton.textContent)
+                            nameInput.value = exerciseButton.textContent;
+                    }
                 });
                 muscleInput === null || muscleInput === void 0 ? void 0 : muscleInput.addEventListener("input", () => {
-                    updateExerciseData(+newExerciseDiv.id, nameInput === null || nameInput === void 0 ? void 0 : nameInput.value, muscleInput.value);
+                    if (muscleInput.value.length) {
+                        updateExerciseData(+newExerciseDiv.id, nameInput === null || nameInput === void 0 ? void 0 : nameInput.value, muscleInput.value);
+                    }
                 });
                 exerciseButton === null || exerciseButton === void 0 ? void 0 : exerciseButton.addEventListener("click", () => {
                     localStorage.clear();
@@ -41,57 +50,8 @@ function createNewExercise() {
                 });
             }
             exerciseIndex++;
-            console.log(newExerciseDiv, exerciseContainer);
         }
     }
-    /*
-    if (exercises.length == 0 || exercises[exercises.length-1]?.name) {
-        
-        const newExercise: Exercise = new Exercise();
-        exercises.push(newExercise);
-
-        const newExerciseDiv: HTMLDivElement = document.createElement("div");
-        
-        const clickableName: HTMLButtonElement = document.createElement("button");
-        clickableName.id = "clickable" + exerciseIndex.toString();
-        clickableName.classList.add("exerciseComponent");
-        clickableName.addEventListener("click", () => {
-            if (newExercise.name) {
-                window.location.href = "tracking.html";
-            }
-        })
-
-        const nameInput: HTMLInputElement = document.createElement("input");
-        nameInput.id = "name" + exerciseIndex.toString();
-        nameInput.placeholder = "Name";
-        nameInput.classList.add("exerciseComponent");
-        nameInput.addEventListener("input", () =>  {
-            updateExerciseData(newExerciseDiv.id, nameInput.value, muscleInput.value, clickableName);
-        });
-
-        const muscleInput: HTMLInputElement = document.createElement("input");
-        muscleInput.id = "muscles" + exerciseIndex.toString();
-        muscleInput.placeholder = "Muscles worked";
-        muscleInput.classList.add("exerciseComponent");
-        muscleInput.addEventListener("input", () => {
-            updateExerciseData(newExerciseDiv.id, nameInput.value, muscleInput.value, clickableName);
-        });
-        
-        
-        if (newExerciseDiv) {
-            exerciseDiv?.appendChild(newExerciseDiv);
-            newExerciseDiv.id = exerciseIndex.toString();
-            newExerciseDiv.classList.add("exercise");
-            
-            newExerciseDiv.appendChild(clickableName);
-            newExerciseDiv.appendChild(nameInput);
-            newExerciseDiv.appendChild(muscleInput);
-            
-            
-            exerciseIndex++;
-        }
-    }
-    */
 }
 function updateExerciseData(exerciseIndex, name, muscles) {
     if (name) {
@@ -100,7 +60,5 @@ function updateExerciseData(exerciseIndex, name, muscles) {
     if (muscles) {
         exercises[exerciseIndex].setMuscles(muscles);
     }
-    //exercises[+exerciseId].setMuscles(muscles);
-    //clickableName.textContent = name;
 }
 //# sourceMappingURL=index.js.map

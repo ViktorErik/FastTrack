@@ -10,13 +10,4 @@ export class Exercise {
     setMuscles(muscles: string): void {
         this.muscles = muscles;
     }
-
-    /*
-    addMuscles(...muscles: string[]): void {
-        for (let muscle of muscles) {
-            if (!this.muscles.includes(muscle)) this.muscles.push(muscle);
-        }
-    }
-    */
-
 }
