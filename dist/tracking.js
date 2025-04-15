@@ -1,13 +1,14 @@
 // Cleana upp koden för i helvete
 import { ExerciseSet } from "./ExerciseSet.js";
 // Load in set data n shi like that here prolly
-const sets = [];
 document.addEventListener("DOMContentLoaded", () => {
     var _a;
     (_a = document.getElementById("addSetButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", addSet);
 });
+const sets = [];
+const maxInputLenth = 10;
 function isValidInput(input) {
-    return (!isNaN(Number(input)) && Number(input) < 10 ** 6);
+    return (!isNaN(Number(input)) && input.length <= maxInputLenth);
 }
 function addSet() {
     if (sets.length == 0 || sets[sets.length - 1].reps) {
@@ -15,7 +16,6 @@ function addSet() {
         if (setBlueprint) {
             const newSet = new ExerciseSet();
             sets.push(newSet);
-            console.log(sets);
             const newSetDiv = setBlueprint.cloneNode(true);
             if (newSetDiv instanceof HTMLElement)
                 newSetDiv.id = "JD"; // TODO: SET UNIQUE ID

@@ -4,14 +4,17 @@ import { ExerciseSet } from "./ExerciseSet.js";
 
 // Load in set data n shi like that here prolly
 
-const sets: ExerciseSet[] = [];
 
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("addSetButton")?.addEventListener("click", addSet);
 });
 
-function isValidInput(input: any) {
-    return (!isNaN(Number(input)) && Number(input) < 10**6);
+
+const sets: ExerciseSet[] = [];
+const maxInputLenth: number = 10;
+
+function isValidInput(input: string) {
+    return (!isNaN(Number(input)) && input.length <= maxInputLenth);
 }
 
 function addSet(): void {
@@ -25,7 +28,6 @@ function addSet(): void {
 
             const newSet: ExerciseSet = new ExerciseSet();
             sets.push(newSet);
-            console.log(sets)
 
             const newSetDiv: Node | null = setBlueprint.cloneNode(true);
             if (newSetDiv instanceof HTMLElement) newSetDiv.id = "JD"; // TODO: SET UNIQUE ID

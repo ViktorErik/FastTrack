@@ -1,49 +1,108 @@
 
-import { Exercise } from "./Exercise.js";
-
-
-
 
 /*
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { collection, addDoc, getFirestore } from "firebase/firestore";
+*/
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyC9G6Aky0LRTMj6rnpQFFCVeZfw5SA4SlM",
-  authDomain: "fasttrack-69875.firebaseapp.com",
-  projectId: "fasttrack-69875",
-  storageBucket: "fasttrack-69875.firebasestorage.app",
-  messagingSenderId: "14126042112",
-  appId: "1:14126042112:web:35d898ba9a64ab0e1d5ce5",
-  measurementId: "G-Q06R30V83M"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-const db = getFirestore(app);
-
-try {
-  const docRef = await addDoc(collection(db, "users"), {
-    first: "Ada",
-    last: "Lovelace",
-    born: 1815
-  });
-  console.log("Document written with ID: ", docRef.id);
-} catch (e) {
-  console.error("Error adding document: ", e);
+declare global {
+    interface Window {
+        firebase: {
+            app: any;
+            db: any;
+            collection: any;
+            addDoc: any;
+            GoogleAuthProvider: any;
+            getAuth: any;
+            signInWithPopup: any;
+            signInWithRedirect: any;
+            getRedirectResult: any;
+            signOut: any;
+        };
+    }
 }
-  */
+
+const db = window.firebase.db;
+const app = window.firebase.app;
+
+const auth = window.firebase.getAuth();
+const GoogleAuthProvider = window.firebase.GoogleAuthProvider;
+const signInWithPopup = window.firebase.signInWithPopup;
+const signInWithRedirect = window.firebase.signInWithRedirect;
+const getRedirectResult = window.firebase.getRedirectResult;
+const signOut = window.firebase.signOut;
+
+auth.languageCode = auth.useDeviceLanguage();
+
+const provider = new GoogleAuthProvider();
+/*
+signInWithPopup(auth, provider)
+.then((result: { user: any; }) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+}).catch((error: { code: any; message: any; customData: { email: any; }; }) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+});
+*/
 
 
+signInWithRedirect(auth, provider);
 
+getRedirectResult(auth)
+.then((result: { user: any; }) => {
+    // This gives you a Google Access Token. You can use it to access Google APIs.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    
+    // The signed-in user info.
+    const user = result.user;
+    // IdP data available using getAdditionalUserInfo(result)
+    // ...
+}).catch((error: { code: any; message: any; customData: { email: any; }; }) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.customData.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+});
 
+signOut(auth).then(() => {
+    // Sign-out successful.
+    }).catch((error: any) => {
+    // An error happened.
+    });
 
-// Load in exercise data n shi like that here prolly
+    /*
+    try {
+    const docRef = await window.firebase.addDoc(window.firebase.collection(db, "users"), {
+        first: "Ada",
+        last: "Lovelace",
+        born: 1815
+        
+        });
+        console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+            }
+            */
+           
+import { Exercise } from "./Exercise.js";
 
 let exerciseIndex: number = 0;
 var exercises: Exercise[] = []; 
