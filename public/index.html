@@ -9,7 +9,7 @@
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { collection, addDoc, getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-        import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, browserSessionPersistence, setPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC9G6Aky0LRTMj6rnpQFFCVeZfw5SA4SlM",
@@ -24,10 +24,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
-        window.firebase = { app, db, collection, addDoc, GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut };
+        window.firebase = { app, db, collection, addDoc, GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, browserSessionPersistence, setPersistence, onAuthStateChanged };
 
     </script>
 
+    <script type="module" src="./../dist/signIn.js"></script>
     <script type="module" src="./../dist/index.js"></script>
     <title>Document</title>
 
