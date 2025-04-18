@@ -36,3 +36,8 @@ body {
 #exerciseBlueprint {
     display: none;
 }
+
+#signOutButton {
+    right: 5%;
+    position: absolute;
+}

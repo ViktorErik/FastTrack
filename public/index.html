@@ -7,34 +7,26 @@
 
     <script defer type="module">
         
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { collection, addDoc, getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-        import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, browserSessionPersistence, setPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+        import { collection, addDoc, getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC9G6Aky0LRTMj6rnpQFFCVeZfw5SA4SlM",
-            authDomain: "fasttrack-69875.firebaseapp.com",
-            projectId: "fasttrack-69875",
-            storageBucket: "fasttrack-69875.firebasestorage.app",
-            messagingSenderId: "14126042112",
-            appId: "1:14126042112:web:35d898ba9a64ab0e1d5ce5",
-            measurementId: "G-Q06R30V83M"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
         
-        window.firebase = { app, db, collection, addDoc, GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, browserSessionPersistence, setPersistence, onAuthStateChanged };
+        window.firebase = { collection, addDoc, doc, setDoc, initializeApp, getFirestore, GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged };
 
     </script>
 
-    <script type="module" src="./../dist/signIn.js"></script>
+    <!--<script type="module" src="./../dist/signIn.js"></script> -->
+    <script type="module" src="./../dist/databaseHandler.js"></script>
     <script type="module" src="./../dist/index.js"></script>
     <title>Document</title>
 
 </head>
 <body>
     <header>Home screen</header>
+
+    <button id="signOutButton">Sign out</button>
+
     <div id="exerciseBlueprint">
         <button id="exerciseButton"></button>
         <input id="nameInput" type="text" placeholder="Name">
