@@ -17,3 +17,5 @@ export const addDoc = window.firebase.addDoc;
 export const collection = window.firebase.collection;
 export const doc = window.firebase.doc;
 export const setDoc = window.firebase.setDoc;
+export const getDoc = window.firebase.getDoc;
+export const getDocs = window.firebase.getDocs;

@@ -1,62 +1,53 @@
 var _a, _b;
 import { signInUser, curUser, signOutUser } from "./signIn.js";
-import { db, doc, setDoc } from "./databaseHandler.js";
+import { addDoc, collection, db, doc, setDoc, getDocs } from "./databaseHandler.js";
 import { Exercise } from "./Exercise.js";
 await signInUser();
-await setDoc(doc(db, "users", curUser.uid), {}); // Register userID, doesn't cause duplicates
-(_a = document.getElementById("signOutButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", signOutUser);
-console.log(curUser);
+(_a = document.getElementById("signOutButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", initNewUser);
 (_b = document.getElementById("addExerciseButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", initializeExercise);
-/*
-if (!sessionStorage.getItem("logged in")) {
-    localStorage.setItem("logged in", "true");
-    location.reload();
-}
-}
-*/
-/*
-    try {
-        const docRef = await window.firebase.addDoc(window.firebase.collection(db, "users"), {
-            first: "Ada",
-            last: "Lovelace",
-            born: 1815
-            
-            });
-            console.log("Document written with ID: ", docRef.id);
-            } catch (e) {
-                console.error("Error adding document: ", e);
-                }
-                */
 let exerciseIndex = 0;
 var exercises = [];
 const exerciseSets = {};
-const nameLength = 50;
-function loadExercises(exercises) {
+const maxInputLength = 50;
+initializeUserExercises();
+function initNewUser() {
+    signOutUser();
+    initializeUserExercises();
+}
+async function initializeUserExercises() {
+    // TODO: Read in exercises
+    const userExercises = await getDocs(collection(db, "users", curUser.uid, "exercises"));
+    userExercises.forEach((exercise) => {
+        const exerciseData = exercise.data();
+        exercises.push(new Exercise(exerciseData["name"], exerciseData["muscles"], exerciseData["id"]));
+    });
+    displayAllExercises(exercises);
+}
+function displayAllExercises(exercises) {
     for (const exercise of exercises) {
         displayExercise(exercise);
     }
 }
 async function initializeExercise() {
-    /*
-    await setDoc(doc(db, "users", "Jonas"), {
-        name: "JONAS",
-        ålder: 3123
-    });
-    await addDoc(collection(db, "users"), {
-        name: "JONAS",
-        ålder: 3123
-    });
-    */
+    const docRef = await addDoc(collection(db, "users", curUser.uid, "exercises"), {});
     const newExercise = new Exercise();
+    newExercise.setId(docRef.id);
+    exercises.push(newExercise);
     displayExercise(newExercise);
+}
+async function writeExerciseToDatabase(exercise) {
+    console.log(exercise);
+    await setDoc(doc(db, "users", curUser.uid, "exercises", exercise.id), {
+        name: exercise.name,
+        muscles: exercise.muscles,
+        id: exercise.id
+    });
 }
 function displayExercise(exercise) {
     const exerciseBlueprint = document.getElementById("exerciseBlueprint");
     if (exerciseBlueprint) {
-        exercises.push(exercise);
         const newExerciseDiv = exerciseBlueprint.cloneNode(true);
-        if (newExerciseDiv instanceof HTMLElement)
-            newExerciseDiv.id = exerciseIndex.toString();
+        // if (newExerciseDiv instanceof HTMLElement) newExerciseDiv.id = exerciseIndex.toString();
         const exerciseContainer = document.getElementById("exerciseContainer");
         if (newExerciseDiv)
             exerciseContainer === null || exerciseContainer === void 0 ? void 0 : exerciseContainer.appendChild(newExerciseDiv);
@@ -68,9 +59,11 @@ function displayExercise(exercise) {
                 nameInput.value = exercise.name;
             if (muscleInput)
                 muscleInput.value = exercise.muscles;
+            if (exerciseButton)
+                exerciseButton.textContent = exercise.name;
             nameInput === null || nameInput === void 0 ? void 0 : nameInput.addEventListener("input", () => {
-                if (nameInput.value.length <= nameLength) {
-                    updateExerciseData(+newExerciseDiv.id, nameInput.value, muscleInput === null || muscleInput === void 0 ? void 0 : muscleInput.value);
+                if (nameInput.value.length <= maxInputLength) {
+                    updateExerciseData(exercise, nameInput.value, muscleInput === null || muscleInput === void 0 ? void 0 : muscleInput.value);
                     if (exerciseButton)
                         exerciseButton.textContent = nameInput.value;
                 }
@@ -80,8 +73,9 @@ function displayExercise(exercise) {
                 }
             });
             muscleInput === null || muscleInput === void 0 ? void 0 : muscleInput.addEventListener("input", () => {
-                if (muscleInput.value.length) {
-                    updateExerciseData(+newExerciseDiv.id, nameInput === null || nameInput === void 0 ? void 0 : nameInput.value, muscleInput.value);
+                if (muscleInput.value.length <= maxInputLength) {
+                    // updateExerciseData(+newExerciseDiv.id, nameInput?.value, muscleInput.value);
+                    updateExerciseData(exercise, nameInput === null || nameInput === void 0 ? void 0 : nameInput.value, muscleInput === null || muscleInput === void 0 ? void 0 : muscleInput.value);
                 }
             });
             exerciseButton === null || exerciseButton === void 0 ? void 0 : exerciseButton.addEventListener("click", () => {
@@ -93,12 +87,13 @@ function displayExercise(exercise) {
         exerciseIndex++;
     }
 }
-function updateExerciseData(exerciseIndex, name, muscles) {
+function updateExerciseData(exercise, name, muscles) {
     if (name) {
-        exercises[exerciseIndex].setName(name);
+        exercise.setName(name);
     }
     if (muscles) {
-        exercises[exerciseIndex].setMuscles(muscles);
+        exercise.setMuscles(muscles);
     }
+    writeExerciseToDatabase(exercise);
 }
 //# sourceMappingURL=index.js.map

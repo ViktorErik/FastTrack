@@ -2,10 +2,12 @@
 export class Exercise {
     name: string = "";
     muscles: string = "";
+    id: string = "";
 
-    constructor(name?: string, muscles?: string) {
+    constructor(name?: string, muscles?: string, id?: string) {
         if (name) this.name = name;
         if (muscles) this.muscles = muscles;
+        if (id) this.id = id;
 
     }
 
@@ -15,5 +17,9 @@ export class Exercise {
 
     setMuscles(muscles: string): void {
         this.muscles = muscles;
+    }
+
+    setId(id: string): void {
+        this.id = id;
     }
 }

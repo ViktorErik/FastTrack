@@ -47,7 +47,6 @@ export function signOutUser() {
     signOut(auth).then(() => {
         // Sign-out successful.
         curUser = null;
-        signInUser();
         console.log("UTLOGGAD");
     }).catch((error) => {
         // An error happened.

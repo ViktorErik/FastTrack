@@ -8,22 +8,20 @@
     <script defer type="module">
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-        import { collection, addDoc, getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        import { collection, addDoc, getFirestore, setDoc, doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
         import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
         
-        window.firebase = { collection, addDoc, doc, setDoc, initializeApp, getFirestore, GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged };
+        window.firebase = { collection, addDoc, doc, setDoc, getDoc, getDocs, initializeApp, getFirestore, GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged };
 
     </script>
 
-    <!--<script type="module" src="./../dist/signIn.js"></script> -->
     <script type="module" src="./../dist/databaseHandler.js"></script>
     <script type="module" src="./../dist/index.js"></script>
-    <title>Document</title>
+    <title>FastTrack</title>
 
 </head>
 <body>
-    <header>Home screen</header>
 
     <button id="signOutButton">Sign out</button>
 

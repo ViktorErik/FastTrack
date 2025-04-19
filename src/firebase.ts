@@ -3,7 +3,7 @@ export {};
 declare global {
     interface Window {
         firebase: {
-
+            
             app: any;
             db: any;
             collection: any;
@@ -12,6 +12,8 @@ declare global {
             getFirestore: any;
             setDoc: any;
             doc: any; 
+            getDoc: any;
+            getDocs: any;
 
             GoogleAuthProvider: any;
             getAuth: any;
