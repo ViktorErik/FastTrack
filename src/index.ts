@@ -32,6 +32,7 @@ async function initializeUserExercises() {
     const userExercises = await getDocs(collection(db, "users", curUser.uid, "exercises"));
     userExercises.forEach((exercise: any) => {
         const exerciseData = exercise.data();
+        console.log(exerciseData);
         exercises.push(new Exercise(exerciseData["name"], exerciseData["muscles"], exerciseData["id"]));
     });
     
@@ -53,6 +54,7 @@ async function initializeExercise() {
     const newExercise: Exercise = new Exercise();
     newExercise.setId(docRef.id);
     exercises.push(newExercise);
+    writeExerciseToDatabase(newExercise);
     displayExercise(newExercise);
 }
 
