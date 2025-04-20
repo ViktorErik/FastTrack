@@ -1,6 +1,8 @@
 // Cleana upp koden för i helvete
 import { ExerciseSet } from "./ExerciseSet.js";
 // Load in set data n shi like that here prolly
+const id = new URLSearchParams(window.location.search).get("id");
+console.log(id);
 document.addEventListener("DOMContentLoaded", () => {
     var _a;
     (_a = document.getElementById("addSetButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", addSet);

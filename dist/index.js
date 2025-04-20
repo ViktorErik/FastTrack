@@ -3,6 +3,7 @@ import { signInUser, curUser, signOutUser } from "./signIn.js";
 import { addDoc, collection, db, doc, setDoc, getDocs } from "./databaseHandler.js";
 import { Exercise } from "./Exercise.js";
 await signInUser();
+console.log("finished");
 (_a = document.getElementById("signOutButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", initNewUser);
 (_b = document.getElementById("addExerciseButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", initializeExercise);
 let exerciseIndex = 0;
@@ -10,18 +11,30 @@ var exercises = [];
 const exerciseSets = {};
 const maxInputLength = 50;
 initializeUserExercises();
-function initNewUser() {
-    signOutUser();
-    initializeUserExercises();
+const signOutButton = document.getElementById("signOutButton");
+if (signOutButton)
+    signOutButton.textContent = curUser.email;
+async function initNewUser() {
+    const signOutButton = document.getElementById("signOutButton");
+    await signOutUser();
+    if (signOutButton)
+        signOutButton.textContent = curUser ? curUser.email : "Signed out";
+    removeExercisesAndExerciseElements();
+    await signInUser();
+    if (signOutButton)
+        signOutButton.textContent = curUser.email;
+    if (curUser)
+        initializeUserExercises();
 }
 async function initializeUserExercises() {
     // TODO: Read in exercises
-    const userExercises = await getDocs(collection(db, "users", curUser.uid, "exercises"));
-    userExercises.forEach((exercise) => {
-        const exerciseData = exercise.data();
-        console.log(exerciseData);
-        exercises.push(new Exercise(exerciseData["name"], exerciseData["muscles"], exerciseData["id"]));
-    });
+    if (curUser) {
+        const userExercises = await getDocs(collection(db, "users", curUser.uid, "exercises"));
+        userExercises.forEach((exercise) => {
+            const exerciseData = exercise.data();
+            exercises.push(new Exercise(exerciseData["name"], exerciseData["muscles"], exerciseData["id"]));
+        });
+    }
     displayAllExercises(exercises);
 }
 function displayAllExercises(exercises) {
@@ -38,7 +51,6 @@ async function initializeExercise() {
     displayExercise(newExercise);
 }
 async function writeExerciseToDatabase(exercise) {
-    console.log(exercise);
     await setDoc(doc(db, "users", curUser.uid, "exercises", exercise.id), {
         name: exercise.name,
         muscles: exercise.muscles,
@@ -49,7 +61,7 @@ function displayExercise(exercise) {
     const exerciseBlueprint = document.getElementById("exerciseBlueprint");
     if (exerciseBlueprint) {
         const newExerciseDiv = exerciseBlueprint.cloneNode(true);
-        // if (newExerciseDiv instanceof HTMLElement) newExerciseDiv.id = exerciseIndex.toString();
+        // if (newExerciseDiv instanceof HTMLElement) newExerciseDiv.id = exercise.id;// exerciseIndex.toString();
         const exerciseContainer = document.getElementById("exerciseContainer");
         if (newExerciseDiv)
             exerciseContainer === null || exerciseContainer === void 0 ? void 0 : exerciseContainer.appendChild(newExerciseDiv);
@@ -81,9 +93,9 @@ function displayExercise(exercise) {
                 }
             });
             exerciseButton === null || exerciseButton === void 0 ? void 0 : exerciseButton.addEventListener("click", () => {
-                localStorage.clear();
-                localStorage.setItem("exercise", exercises[+newExerciseDiv.id].name);
-                window.location.href = "tracking.html";
+                // localStorage.clear()
+                // localStorage.setItem("exercise", exercises[+newExerciseDiv.id].name);
+                window.location.href = `tracking.html?id=${exercise.id}`;
             });
         }
         exerciseIndex++;
@@ -97,5 +109,12 @@ function updateExerciseData(exercise, name, muscles) {
         exercise.setMuscles(muscles);
     }
     writeExerciseToDatabase(exercise);
+}
+function removeExercisesAndExerciseElements() {
+    exercises = [];
+    const elements = document.querySelectorAll("#exerciseContainer > *");
+    elements.forEach((element) => {
+        element.remove();
+    });
 }
 //# sourceMappingURL=index.js.map

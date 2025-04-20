@@ -14,8 +14,7 @@ auth.languageCode = auth.useDeviceLanguage();
 const provider = new GoogleAuthProvider();
 
 
-function _signIn() {
-
+async function _signIn(resolve: any): Promise<any> {
     
     signInWithPopup(auth, provider)
     .then((result: { user: any; }) => {
@@ -24,6 +23,8 @@ function _signIn() {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
+        curUser = user;
+        resolve();
         // IdP data available using getAdditionalUserInfo(result)
         // ...
     }).catch((error: { code: any; message: any; customData: { email: any; }; }) => {
@@ -36,14 +37,14 @@ function _signIn() {
         const credential = GoogleAuthProvider.credentialFromError(error);
 
         if (errorCode == "auth/popup-closed-by-user") {
-            _signIn();
+            _signIn(resolve);
         }
 
         // ...
     });
 }
 
-
+/*
 export async function signInUser(): Promise<any> {
    
     return new Promise((resolve) => {
@@ -58,17 +59,35 @@ export async function signInUser(): Promise<any> {
         });
     });
 }
+*/
+
+
+export async function signInUser(): Promise<any> {
+   
+    return new Promise((resolve) => {
+        
+        if (!curUser) {
+            _signIn(resolve);
+        }
+        else {
+            resolve(curUser);
+        }
+    });
+}
 
 
 
 
-export function signOutUser() {
+export async function signOutUser(): Promise<void> {
     
-    signOut(auth).then(() => {
-        // Sign-out successful.
-        curUser = null;
-        console.log("UTLOGGAD");
-    }).catch((error: any) => {
-        // An error happened.
+    return new Promise((resolve) => {
+
+            signOut(auth).then(() => {
+                // Sign-out successful.
+                curUser = null;
+                resolve();
+            }).catch((error: any) => {
+                // An error happened.
+            })
     });
 }

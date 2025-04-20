@@ -3,6 +3,8 @@
 import { ExerciseSet } from "./ExerciseSet.js";
 
 // Load in set data n shi like that here prolly
+const id: string | null = new URLSearchParams(window.location.search).get("id");
+console.log(id);
 
 
 document.addEventListener("DOMContentLoaded", () => {
