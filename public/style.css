@@ -14,18 +14,32 @@ body {
     margin: 0px;
 }
 
+#exerciseContainer {
+    
+}
+
 /* Every exercise */
 #exerciseContainer > div {
     width: 50%;
     margin-top: 2%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     border: solid 3px whitesmoke;
     padding: 0.3%;
 }
 
+#exerciseContainer > div > #exercise-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#exerciseContainer > div > #deleteExerciseButton {
+
+}
+
 /* Every component in an exercise */
-#exerciseContainer > div > input, #exerciseContainer > div > button {
+#exerciseContainer > div > #exercise-content > input, #exerciseContainer > div > #exercise-content > button {
     height: 2em;
 }
 
@@ -41,8 +55,10 @@ body {
     right: 5%;
     position: absolute;
 }
+
 #signInButton {
     right: 5%;
     position: absolute;
     margin-top: 3%;
 }
+

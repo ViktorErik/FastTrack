@@ -26,9 +26,11 @@ async function _signIn(resolve) {
         const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
+        /*
         if (errorCode == "auth/popup-closed-by-user") {
             _signIn(resolve);
         }
+            */
         // ...
     });
 }

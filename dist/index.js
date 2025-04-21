@@ -1,29 +1,35 @@
-var _a, _b;
+var _a, _b, _c;
 import { signInUser, curUser, signOutUser } from "./signIn.js";
 import { addDoc, collection, db, doc, setDoc, getDocs } from "./databaseHandler.js";
 import { Exercise } from "./Exercise.js";
-await signInUser();
-(_a = document.getElementById("signOutButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", initNewUser);
-(_b = document.getElementById("addExerciseButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", initializeExercise);
+initNewUser();
+(_a = document.getElementById("signInButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", initNewUser);
+(_b = document.getElementById("signOutButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", logOutUser);
+(_c = document.getElementById("addExerciseButton")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", initializeExercise);
 let exerciseIndex = 0;
 var exercises = [];
 const exerciseSets = {};
 const maxInputLength = 50;
 initializeUserExercises();
 const signOutButton = document.getElementById("signOutButton");
-if (signOutButton)
-    signOutButton.textContent = curUser.email;
+const signInButton = document.getElementById("signInButton");
 async function initNewUser() {
-    const signOutButton = document.getElementById("signOutButton");
+    if (!curUser) {
+        await signInUser();
+        if (signInButton)
+            signInButton.textContent = curUser.email;
+        if (signOutButton)
+            signOutButton.textContent = "Sign out";
+        initializeUserExercises();
+    }
+}
+async function logOutUser() {
     await signOutUser();
     if (signOutButton)
         signOutButton.textContent = curUser ? curUser.email : "Signed out";
+    if (signInButton)
+        signInButton.textContent = "Sign in";
     removeExercisesAndExerciseElements();
-    await signInUser();
-    if (signOutButton)
-        signOutButton.textContent = curUser.email;
-    if (curUser)
-        initializeUserExercises();
 }
 async function initializeUserExercises() {
     if (curUser) {

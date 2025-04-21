@@ -4,10 +4,11 @@ import { signInUser, curUser, signOutUser } from "./signIn.js";
 import { addDoc, collection, db, doc, setDoc, getDoc, getDocs } from "./databaseHandler.js"
 import { Exercise } from "./Exercise.js";
 
+initNewUser();
 
-await signInUser();
 
-document.getElementById("signOutButton")?.addEventListener("click", initNewUser);
+document.getElementById("signInButton")?.addEventListener("click", initNewUser)
+document.getElementById("signOutButton")?.addEventListener("click", logOutUser);
 
 
 document.getElementById("addExerciseButton")?.addEventListener("click", initializeExercise);
@@ -20,20 +21,25 @@ const exerciseSets: any = {};
 const maxInputLength: number = 50;
 initializeUserExercises();
 const signOutButton: HTMLElement | null = document.getElementById("signOutButton");
-if (signOutButton) signOutButton.textContent = curUser.email;
+const signInButton: HTMLElement | null = document.getElementById("signInButton");
 
-async function initNewUser(){
-    
-    const signOutButton: HTMLElement | null = document.getElementById("signOutButton");
+
+
+async function initNewUser() {
+    if (!curUser) {
+        await signInUser();
+        if (signInButton) signInButton.textContent = curUser.email;
+        if (signOutButton) signOutButton.textContent = "Sign out"
+        
+        initializeUserExercises();
+    }
+}
+
+async function logOutUser() {
     await signOutUser();
     if (signOutButton) signOutButton.textContent = curUser? curUser.email : "Signed out";
+    if (signInButton) signInButton.textContent = "Sign in";
     removeExercisesAndExerciseElements();
-
-    await signInUser();
-    if (signOutButton) signOutButton.textContent = curUser.email;
-    
-    if (curUser) initializeUserExercises();
-    
 }
 
 async function initializeUserExercises() {
@@ -90,6 +96,7 @@ function displayExercise(exercise: Exercise): void {
         // if (newExerciseDiv instanceof HTMLElement) newExerciseDiv.id = exercise.id;// exerciseIndex.toString();
         
         const exerciseContainer: HTMLElement | null = document.getElementById("exerciseContainer");
+
         if (newExerciseDiv) exerciseContainer?.appendChild(newExerciseDiv);
         
         if (newExerciseDiv instanceof HTMLElement) {
@@ -97,6 +104,7 @@ function displayExercise(exercise: Exercise): void {
             const muscleInput: HTMLInputElement | null = newExerciseDiv.querySelector("#muscleInput");
             const exerciseButton: HTMLButtonElement | null = newExerciseDiv.querySelector("#exerciseButton");
             
+
             if (nameInput) nameInput.value = exercise.name;
             if (muscleInput) muscleInput.value = exercise.muscles;
             if (exerciseButton) exerciseButton.textContent = exercise.name;
