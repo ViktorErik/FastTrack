@@ -3,7 +3,6 @@ import { signInUser, curUser, signOutUser } from "./signIn.js";
 import { addDoc, collection, db, doc, setDoc, getDocs } from "./databaseHandler.js";
 import { Exercise } from "./Exercise.js";
 await signInUser();
-console.log("finished");
 (_a = document.getElementById("signOutButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", initNewUser);
 (_b = document.getElementById("addExerciseButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", initializeExercise);
 let exerciseIndex = 0;
@@ -27,7 +26,6 @@ async function initNewUser() {
         initializeUserExercises();
 }
 async function initializeUserExercises() {
-    // TODO: Read in exercises
     if (curUser) {
         const userExercises = await getDocs(collection(db, "users", curUser.uid, "exercises"));
         userExercises.forEach((exercise) => {

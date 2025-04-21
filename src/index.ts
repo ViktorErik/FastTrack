@@ -6,7 +6,6 @@ import { Exercise } from "./Exercise.js";
 
 
 await signInUser();
-console.log("finished");
 
 document.getElementById("signOutButton")?.addEventListener("click", initNewUser);
 
@@ -39,7 +38,6 @@ async function initNewUser(){
 
 async function initializeUserExercises() {
     
-    // TODO: Read in exercises
     
     if (curUser) {   
         const userExercises = await getDocs(collection(db, "users", curUser.uid, "exercises"));
@@ -62,8 +60,7 @@ function displayAllExercises(exercises: Exercise[]): void {
 
 async function initializeExercise() {
     
-    const docRef = await addDoc(collection(db, "users", curUser.uid, "exercises"), {
-    });
+    const docRef = await addDoc(collection(db, "users", curUser.uid, "exercises"), {});
     const newExercise: Exercise = new Exercise();
     newExercise.setId(docRef.id);
     exercises.push(newExercise);

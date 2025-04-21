@@ -41,3 +41,8 @@ body {
     right: 5%;
     position: absolute;
 }
+#signInButton {
+    right: 5%;
+    position: absolute;
+    margin-top: 3%;
+}
