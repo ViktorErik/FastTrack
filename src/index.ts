@@ -1,7 +1,7 @@
 
 
 import { signInUser, curUser, signOutUser } from "./signIn.js";
-import { addDoc, collection, db, doc, setDoc, getDoc, getDocs } from "./databaseHandler.js"
+import { addDoc, collection, db, doc, setDoc, getDoc, getDocs, deleteDoc } from "./databaseHandler.js"
 import { Exercise } from "./Exercise.js";
 
 initNewUser();
@@ -14,8 +14,6 @@ document.getElementById("signOutButton")?.addEventListener("click", logOutUser);
 document.getElementById("addExerciseButton")?.addEventListener("click", initializeExercise);
 
 
-
-let exerciseIndex: number = 0;
 var exercises: Exercise[] = []; 
 const exerciseSets: any = {};
 const maxInputLength: number = 50;
@@ -93,7 +91,7 @@ function displayExercise(exercise: Exercise): void {
         
         
         const newExerciseDiv: Node | null = exerciseBlueprint.cloneNode(true);
-        // if (newExerciseDiv instanceof HTMLElement) newExerciseDiv.id = exercise.id;// exerciseIndex.toString();
+        if (newExerciseDiv instanceof HTMLElement) newExerciseDiv.id = exercise.id;// exerciseIndex.toString();
         
         const exerciseContainer: HTMLElement | null = document.getElementById("exerciseContainer");
 
@@ -103,6 +101,7 @@ function displayExercise(exercise: Exercise): void {
             const nameInput: HTMLInputElement | null = newExerciseDiv.querySelector("#nameInput");
             const muscleInput: HTMLInputElement | null = newExerciseDiv.querySelector("#muscleInput");
             const exerciseButton: HTMLButtonElement | null = newExerciseDiv.querySelector("#exerciseButton");
+            const deleteExerciseButton: HTMLButtonElement | null = newExerciseDiv.querySelector("#deleteExerciseButton");
             
 
             if (nameInput) nameInput.value = exercise.name;
@@ -134,9 +133,13 @@ function displayExercise(exercise: Exercise): void {
                 // localStorage.setItem("exercise", exercises[+newExerciseDiv.id].name);
                 window.location.href = `tracking.html?id=${exercise.id}`;
             });
+
+            deleteExerciseButton?.addEventListener("click", () => {
+                removeExerciseAndExerciseElement(exercise);
+            });
+
         }
 
-        exerciseIndex++;
     }
     
     
@@ -162,4 +165,12 @@ function removeExercisesAndExerciseElements() {
     elements.forEach((element: any) => {
         element.remove();
     });
+}
+
+async function removeExerciseAndExerciseElement(exercise: Exercise) {
+    const element = document.getElementById(exercise.id);
+    element?.remove();
+
+    await deleteDoc(doc(db, "users", curUser.uid, "exercises", exercise.id));
+
 }

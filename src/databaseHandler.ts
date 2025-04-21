@@ -19,3 +19,4 @@ export const doc = window.firebase.doc;
 export const setDoc = window.firebase.setDoc;
 export const getDoc = window.firebase.getDoc;
 export const getDocs = window.firebase.getDocs;
+export const deleteDoc = window.firebase.deleteDoc;

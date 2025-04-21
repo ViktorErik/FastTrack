@@ -8,11 +8,11 @@
     <script defer type="module">
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-        import { collection, addDoc, getFirestore, setDoc, doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+        import { collection, addDoc, getFirestore, setDoc, doc, getDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
         import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
         
-        window.firebase = { collection, addDoc, doc, setDoc, getDoc, getDocs, initializeApp, getFirestore, GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged };
+        window.firebase = { collection, addDoc, doc, setDoc, getDoc, getDocs, deleteDoc, initializeApp, getFirestore, GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged };
 
     </script>
 
@@ -23,13 +23,13 @@
 </head>
 <body>
 
-    <button id="signOutButton">Signed out</button>
-    <button id="signInButton">Sign in</button>
-
+    <div id="userHandling">
+        <button id="signInButton">Sign in</button>
+        <button id="signOutButton">Signed out</button>
+    </div>
 
     <div id="exerciseBlueprint">
         <div id="exercise-content">
-
             <button id="exerciseButton"></button>
             <input id="nameInput" type="text" placeholder="Name">
             <input id="muscleInput" type="text" placeholder="Muscles worked">

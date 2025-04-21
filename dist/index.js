@@ -1,12 +1,11 @@
 var _a, _b, _c;
 import { signInUser, curUser, signOutUser } from "./signIn.js";
-import { addDoc, collection, db, doc, setDoc, getDocs } from "./databaseHandler.js";
+import { addDoc, collection, db, doc, setDoc, getDocs, deleteDoc } from "./databaseHandler.js";
 import { Exercise } from "./Exercise.js";
 initNewUser();
 (_a = document.getElementById("signInButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", initNewUser);
 (_b = document.getElementById("signOutButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", logOutUser);
 (_c = document.getElementById("addExerciseButton")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", initializeExercise);
-let exerciseIndex = 0;
 var exercises = [];
 const exerciseSets = {};
 const maxInputLength = 50;
@@ -65,7 +64,8 @@ function displayExercise(exercise) {
     const exerciseBlueprint = document.getElementById("exerciseBlueprint");
     if (exerciseBlueprint) {
         const newExerciseDiv = exerciseBlueprint.cloneNode(true);
-        // if (newExerciseDiv instanceof HTMLElement) newExerciseDiv.id = exercise.id;// exerciseIndex.toString();
+        if (newExerciseDiv instanceof HTMLElement)
+            newExerciseDiv.id = exercise.id; // exerciseIndex.toString();
         const exerciseContainer = document.getElementById("exerciseContainer");
         if (newExerciseDiv)
             exerciseContainer === null || exerciseContainer === void 0 ? void 0 : exerciseContainer.appendChild(newExerciseDiv);
@@ -73,6 +73,7 @@ function displayExercise(exercise) {
             const nameInput = newExerciseDiv.querySelector("#nameInput");
             const muscleInput = newExerciseDiv.querySelector("#muscleInput");
             const exerciseButton = newExerciseDiv.querySelector("#exerciseButton");
+            const deleteExerciseButton = newExerciseDiv.querySelector("#deleteExerciseButton");
             if (nameInput)
                 nameInput.value = exercise.name;
             if (muscleInput)
@@ -101,8 +102,10 @@ function displayExercise(exercise) {
                 // localStorage.setItem("exercise", exercises[+newExerciseDiv.id].name);
                 window.location.href = `tracking.html?id=${exercise.id}`;
             });
+            deleteExerciseButton === null || deleteExerciseButton === void 0 ? void 0 : deleteExerciseButton.addEventListener("click", () => {
+                removeExerciseAndExerciseElement(exercise);
+            });
         }
-        exerciseIndex++;
     }
 }
 function updateExerciseData(exercise, name, muscles) {
@@ -120,5 +123,10 @@ function removeExercisesAndExerciseElements() {
     elements.forEach((element) => {
         element.remove();
     });
+}
+async function removeExerciseAndExerciseElement(exercise) {
+    const element = document.getElementById(exercise.id);
+    element === null || element === void 0 ? void 0 : element.remove();
+    await deleteDoc(doc(db, "users", curUser.uid, "exercises", exercise.id));
 }
 //# sourceMappingURL=index.js.map

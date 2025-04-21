@@ -14,6 +14,7 @@ declare global {
             doc: any; 
             getDoc: any;
             getDocs: any;
+            deleteDoc: any;
 
             GoogleAuthProvider: any;
             getAuth: any;

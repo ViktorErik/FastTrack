@@ -14,9 +14,6 @@ body {
     margin: 0px;
 }
 
-#exerciseContainer {
-    
-}
 
 /* Every exercise */
 #exerciseContainer > div {
@@ -31,15 +28,21 @@ body {
 #exerciseContainer > div > #exercise-content {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 80%;
 }
 
 #exerciseContainer > div > #deleteExerciseButton {
-
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    justify-content: center;
+    font-size: 120%;
+    
 }
 
 /* Every component in an exercise */
-#exerciseContainer > div > #exercise-content > input, #exerciseContainer > div > #exercise-content > button {
+#exerciseContainer > div > #exercise-content > input, 
+#exerciseContainer > div > #exercise-content > button {
     height: 2em;
 }
 
@@ -51,14 +54,16 @@ body {
     display: none;
 }
 
-#signOutButton {
-    right: 5%;
+#userHandling {
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    right: 5%;
 }
 
-#signInButton {
-    right: 5%;
-    position: absolute;
-    margin-top: 3%;
+#signOutButton {
+    margin-top: 5%;
 }
+
+
 
