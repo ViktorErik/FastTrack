@@ -6,6 +6,9 @@ const onAuthStateChanged = window.firebase.onAuthStateChanged;
 export let curUser = auth.currentUser;
 auth.languageCode = auth.useDeviceLanguage();
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+    prompt: "select_account"
+});
 async function _signIn(resolve) {
     signInWithPopup(auth, provider)
         .then((result) => {

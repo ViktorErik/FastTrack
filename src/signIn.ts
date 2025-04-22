@@ -12,6 +12,9 @@ export let curUser = auth.currentUser;
 auth.languageCode = auth.useDeviceLanguage();
 
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+    prompt: "select_account"
+});
 
 
 async function _signIn(resolve: any): Promise<any> {
