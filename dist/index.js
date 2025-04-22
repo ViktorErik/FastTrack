@@ -125,8 +125,14 @@ function removeExercisesAndExerciseElements() {
     });
 }
 async function removeExerciseAndExerciseElement(exercise) {
-    const element = document.getElementById(exercise.id);
-    element === null || element === void 0 ? void 0 : element.remove();
-    await deleteDoc(doc(db, "users", curUser.uid, "exercises", exercise.id));
+    const emailConfirmation = prompt("WARNING! You're about to delete an exercise \
+        and ALL of the sets associated with it. \
+        Enter your email to confirm the deletion.");
+    console.log(emailConfirmation);
+    if (emailConfirmation == curUser.email) {
+        const element = document.getElementById(exercise.id);
+        element === null || element === void 0 ? void 0 : element.remove();
+        await deleteDoc(doc(db, "users", curUser.uid, "exercises", exercise.id));
+    }
 }
 //# sourceMappingURL=index.js.map

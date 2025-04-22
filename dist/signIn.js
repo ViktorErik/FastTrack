@@ -7,7 +7,7 @@ export let curUser = auth.currentUser;
 auth.languageCode = auth.useDeviceLanguage();
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
-    prompt: "select_account"
+    prompt: "select_account" // So that you can choose account
 });
 async function _signIn(resolve) {
     signInWithPopup(auth, provider)
