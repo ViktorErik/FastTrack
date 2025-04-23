@@ -1,10 +1,22 @@
 
 
-import { signInUser, curUser, signOutUser } from "./signIn.js";
+import { signInUser, getRedirectResult, curUser, signOutUser, onAuthStateChanged, GoogleAuthProvider, auth } from "./signIn.js";
 import { addDoc, collection, db, doc, setDoc, getDoc, getDocs, deleteDoc } from "./databaseHandler.js"
 import { Exercise } from "./Exercise.js";
+// initNewUser();
 
-initNewUser();
+/*
+await getRedirectResult(auth);
+
+
+onAuthStateChanged(auth, (user: any) => {
+    if (user) {
+        if (signInButton) signInButton.textContent = user.email;
+        initializeUserExercises();
+    }
+});
+*/
+
 
 
 document.getElementById("signInButton")?.addEventListener("click", initNewUser)
@@ -63,13 +75,14 @@ function displayAllExercises(exercises: Exercise[]): void {
 }
 
 async function initializeExercise() {
-    
-    const docRef = await addDoc(collection(db, "users", curUser.uid, "exercises"), {});
-    const newExercise: Exercise = new Exercise();
-    newExercise.setId(docRef.id);
-    exercises.push(newExercise);
-    writeExerciseToDatabase(newExercise);
-    displayExercise(newExercise);
+    if (curUser) {
+        const docRef = await addDoc(collection(db, "users", curUser.uid, "exercises"), {});
+        const newExercise: Exercise = new Exercise();
+        newExercise.setId(docRef.id);
+        exercises.push(newExercise);
+        writeExerciseToDatabase(newExercise);
+        displayExercise(newExercise);
+    }
 }
 
 
@@ -169,12 +182,9 @@ function removeExercisesAndExerciseElements() {
 
 async function removeExerciseAndExerciseElement(exercise: Exercise) {
     
-    const emailConfirmation = prompt("WARNING! You're about to delete an exercise \
-        and ALL of the sets associated with it. \
-        Enter your email to confirm the deletion.");
+    const emailConfirmation = prompt("WARNING! You're about to delete an exercise and ALL of the sets associated with it. Enter your email to confirm the deletion.");
         
     
-    console.log(emailConfirmation);
     if (emailConfirmation == curUser.email) {
         const element = document.getElementById(exercise.id);
         element?.remove();

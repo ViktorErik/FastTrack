@@ -1,8 +1,11 @@
-const auth = window.firebase.getAuth();
-const GoogleAuthProvider = window.firebase.GoogleAuthProvider;
+// import { getRedirectResult, signInWithRedirect } from "./databaseHandler";
+export const auth = window.firebase.getAuth();
+export const GoogleAuthProvider = window.firebase.GoogleAuthProvider;
 const signInWithPopup = window.firebase.signInWithPopup;
+const signInWithRedirect = window.firebase.signInWithRedirect;
+export const getRedirectResult = window.firebase.getRedirectResult;
 const signOut = window.firebase.signOut;
-const onAuthStateChanged = window.firebase.onAuthStateChanged;
+export const onAuthStateChanged = window.firebase.onAuthStateChanged;
 export let curUser = auth.currentUser;
 auth.languageCode = auth.useDeviceLanguage();
 const provider = new GoogleAuthProvider();
@@ -10,6 +13,9 @@ provider.setCustomParameters({
     prompt: "select_account" // So that you can choose account
 });
 async function _signIn(resolve) {
+    /*
+    signInWithRedirect(auth, provider);
+    */
     signInWithPopup(auth, provider)
         .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -33,7 +39,7 @@ async function _signIn(resolve) {
         if (errorCode == "auth/popup-closed-by-user") {
             _signIn(resolve);
         }
-            */
+        */
         // ...
     });
 }

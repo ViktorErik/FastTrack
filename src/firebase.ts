@@ -20,6 +20,8 @@ declare global {
             getAuth: any;
             signInWithPopup: any;
             signOut: any;
+            signInWithRedirect: any;
+            getRedirectResult: any;
             onAuthStateChanged: any;
         };
     }

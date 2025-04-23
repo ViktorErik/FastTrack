@@ -9,10 +9,10 @@
         
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
         import { collection, addDoc, getFirestore, setDoc, doc, getDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
-        import { GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+        import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
         
-        window.firebase = { collection, addDoc, doc, setDoc, getDoc, getDocs, deleteDoc, initializeApp, getFirestore, GoogleAuthProvider, getAuth, signInWithPopup, signOut, onAuthStateChanged };
+        window.firebase = { collection, addDoc, doc, setDoc, getDoc, getDocs, deleteDoc, initializeApp, getFirestore, GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged };
 
     </script>
 

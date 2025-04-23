@@ -1,11 +1,14 @@
+// import { getRedirectResult, signInWithRedirect } from "./databaseHandler";
 
 
 
-const auth = window.firebase.getAuth();
-const GoogleAuthProvider = window.firebase.GoogleAuthProvider;
+export const auth = window.firebase.getAuth();
+export const GoogleAuthProvider = window.firebase.GoogleAuthProvider;
 const signInWithPopup = window.firebase.signInWithPopup;
+const signInWithRedirect = window.firebase.signInWithRedirect;
+export const getRedirectResult = window.firebase.getRedirectResult;
 const signOut = window.firebase.signOut;
-const onAuthStateChanged = window.firebase.onAuthStateChanged;
+export const onAuthStateChanged = window.firebase.onAuthStateChanged;
 
 export let curUser = auth.currentUser;
 
@@ -18,6 +21,10 @@ provider.setCustomParameters({
 
 
 async function _signIn(resolve: any): Promise<any> {
+    
+    /*
+    signInWithRedirect(auth, provider);
+    */
     
     signInWithPopup(auth, provider)
     .then((result: { user: any; }) => {
@@ -43,8 +50,8 @@ async function _signIn(resolve: any): Promise<any> {
         if (errorCode == "auth/popup-closed-by-user") {
             _signIn(resolve);
         }
-            */
-
+        */
+        
         // ...
     });
 }

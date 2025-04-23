@@ -2,7 +2,18 @@ var _a, _b, _c;
 import { signInUser, curUser, signOutUser } from "./signIn.js";
 import { addDoc, collection, db, doc, setDoc, getDocs, deleteDoc } from "./databaseHandler.js";
 import { Exercise } from "./Exercise.js";
-initNewUser();
+// initNewUser();
+/*
+await getRedirectResult(auth);
+
+
+onAuthStateChanged(auth, (user: any) => {
+    if (user) {
+        if (signInButton) signInButton.textContent = user.email;
+        initializeUserExercises();
+    }
+});
+*/
 (_a = document.getElementById("signInButton")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", initNewUser);
 (_b = document.getElementById("signOutButton")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", logOutUser);
 (_c = document.getElementById("addExerciseButton")) === null || _c === void 0 ? void 0 : _c.addEventListener("click", initializeExercise);
@@ -46,12 +57,14 @@ function displayAllExercises(exercises) {
     }
 }
 async function initializeExercise() {
-    const docRef = await addDoc(collection(db, "users", curUser.uid, "exercises"), {});
-    const newExercise = new Exercise();
-    newExercise.setId(docRef.id);
-    exercises.push(newExercise);
-    writeExerciseToDatabase(newExercise);
-    displayExercise(newExercise);
+    if (curUser) {
+        const docRef = await addDoc(collection(db, "users", curUser.uid, "exercises"), {});
+        const newExercise = new Exercise();
+        newExercise.setId(docRef.id);
+        exercises.push(newExercise);
+        writeExerciseToDatabase(newExercise);
+        displayExercise(newExercise);
+    }
 }
 async function writeExerciseToDatabase(exercise) {
     await setDoc(doc(db, "users", curUser.uid, "exercises", exercise.id), {
@@ -125,10 +138,7 @@ function removeExercisesAndExerciseElements() {
     });
 }
 async function removeExerciseAndExerciseElement(exercise) {
-    const emailConfirmation = prompt("WARNING! You're about to delete an exercise \
-        and ALL of the sets associated with it. \
-        Enter your email to confirm the deletion.");
-    console.log(emailConfirmation);
+    const emailConfirmation = prompt("WARNING! You're about to delete an exercise and ALL of the sets associated with it. Enter your email to confirm the deletion.");
     if (emailConfirmation == curUser.email) {
         const element = document.getElementById(exercise.id);
         element === null || element === void 0 ? void 0 : element.remove();
