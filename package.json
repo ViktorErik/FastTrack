@@ -1,5 +1,6 @@
 {
   "name": "fasttrack",
+  "homepage": "https://viktorerik.github.io/FastTrack/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
