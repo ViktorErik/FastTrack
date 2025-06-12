@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { AuthContext } from "../providers/AuthProvider";
 import "./ExerciseView.css";
 import useSets, { addSetToDatabase } from "../data-handlers/setHandler";
-import type Exercise from "../classes/Exercise";
+
 import Set from "../classes/Set";
 
 

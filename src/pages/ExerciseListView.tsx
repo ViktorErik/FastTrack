@@ -1,32 +1,31 @@
 import { useContext, useEffect } from "react"
 import { AuthContext } from "../providers/AuthProvider"
 import { Link, useNavigate } from "react-router";
-import useExercises, { addExerciseToDatabase, deleteExerciseFromDatabase } from "../data-handlers/exerciseHandler";
+import useExercises, { addExerciseToDatabase } from "../data-handlers/exerciseHandler";
 import "./ExerciseListView.css";
-import type { User } from "firebase/auth";
+
 import type Exercise from "../classes/Exercise";
-import { CiEdit } from "react-icons/ci";
-import { MdOutlineDeleteForever } from "react-icons/md";
 // import Drawer from '@mui/material/Drawer';
 
 
 
 
-
+/*
 async function deleteExercise(user: User, exercise: Exercise, updateExercises: () => void) {
     await deleteExerciseFromDatabase(user, exercise);
     updateExercises();
 }
+    */
 
 type ExerciseCardProps = {
-    user: User;
+    
     exercise: Exercise;
-    updateExercises: () => void;
+    
 };
 
 
 
-function ExerciseCard({ user, exercise, updateExercises }: ExerciseCardProps) {
+function ExerciseCard({ exercise }: ExerciseCardProps) {
 
     return (
         <div className="card">                        
@@ -73,7 +72,7 @@ export const ExerciseListView = () => {
     return (
         <div className="exerciseList">            
             {exercises.map((exercise: Exercise) => (               
-                <ExerciseCard key={exercise.getId()} user={auth!.curUser!} exercise={exercise} updateExercises={getExercises}/>
+                <ExerciseCard key={exercise.getId()} exercise={exercise} />
             ))}        
         
             <button onClick={ addExercise }>
