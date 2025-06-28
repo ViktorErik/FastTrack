@@ -2,9 +2,9 @@
 // import viteLogo from '/vite.svg'
 // import './App.css'
 // import './index.css'
-import { BrowserRouter, Route, Routes } from 'react-router'
-import ExerciseListView from "./pages/ExerciseListView";
-import SignInView from './pages/SignInView';
+// import { BrowserRouter, Route, Routes } from 'react-router'
+import { HashRouter, Route, Routes } from 'react-router'
+import HomeView from './pages/HomeView';
 import { AuthProvider } from './providers/AuthProvider';
 import ExerciseView from './pages/ExerciseView';
 
@@ -14,17 +14,19 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <BrowserRouter>
+        {/* <BrowserRouter> */}
+          <HashRouter>
 
             <Routes>
-              <Route path='/' element={<SignInView/>}/>
-              <Route path='/ExerciseListView' element={<ExerciseListView/>}/>              
-              <Route path="ExerciseListView/:exerciseId" element={<ExerciseView />} />
-
+              <Route path='/' element={<HomeView/>}/>
+              {/* <Route path='/FastTrack/ExerciseListView' element={<ExerciseListView/>}/> // /FastTrack/....   */}
+              <Route path="/:exerciseId" element={<ExerciseView />} /> // /FastTrack/....
+              {/* <Route path="*" element={<SignInView/>}/> */}
               
             </Routes>
+          </HashRouter>
           
-        </BrowserRouter>
+        {/* </BrowserRouter> */}
       </AuthProvider>  
       
 

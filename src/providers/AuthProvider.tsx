@@ -1,16 +1,17 @@
 
-import { onAuthStateChanged, signInWithPopup, type User } from "firebase/auth";
+import { onAuthStateChanged, signInWithPopup, signOut, type User } from "firebase/auth";
 import { useState, useEffect, createContext, type ReactNode } from "react";
 import { auth, provider } from "../firebase/firebase";
 
 
-
-
+provider.setCustomParameters({
+  prompt: "select_account"
+});
 
 type AuthContextType = {
     curUser: User | null;
-    signIn: () => Promise<void>;
-    test: () => void;
+    signInUser: () => Promise<void>;
+    signOutUser: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -23,27 +24,28 @@ export const AuthProvider = ({children} : {children: ReactNode}) => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             console.log("onAuthStateChanged:", user);
 
-        if (user) {
-            setCurUser(user);
-        } 
+        setCurUser(user);
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [curUser]);
 
     
-    const signIn = async () => {
+    const signInUser = async () => {
       // signOut(auth);
       await signInWithPopup(auth, provider);
-      
+      // await signInWithRedirect(auth, provider);
+      // await getRedirectResult(auth, )
     }
-    const test = () => {
-      console.log(curUser);
-    }                 
+
+    const signOutUser = async () => {
+        console.log("HEJ");
+        await signOut(auth);
+    }
 
     return (
         <>
-            <AuthContext.Provider value={{curUser, signIn, test,}}>     
+            <AuthContext.Provider value={{curUser, signInUser, signOutUser}}>     
                 {children}           
             </AuthContext.Provider>                    
         </>

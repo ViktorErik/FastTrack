@@ -5,6 +5,16 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
+
+  {async rewrites() {
+    return [
+      {
+        source: "/__/auth/:path*",
+        destination: `https://firebase-69875.firebaseapp.com/__/auth/:path*`,
+      },
+    ];
+  },},
+
   { ignores: ['dist'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],

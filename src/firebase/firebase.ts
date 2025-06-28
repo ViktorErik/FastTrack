@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyC9G6Aky0LRTMj6rnpQFFCVeZfw5SA4SlM",
-    authDomain: "fasttrack-69875.firebaseapp.com",
+    authDomain: "fasttrack-69875.firebaseapp.com",    
     projectId: "fasttrack-69875",
     storageBucket: "fasttrack-69875.firebasestorage.app",
     messagingSenderId: "14126042112",

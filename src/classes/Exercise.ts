@@ -2,11 +2,13 @@ export default class Exercise {
     name: string = "";
     muscles: string = "";
     id!: string;
+    submitted: boolean = false;
 
-    constructor(id: string, name: string = "", muscles: string = "") {
+    constructor(id: string, name: string = "", muscles: string = "", submitted: boolean = false) {
         this.setName(name);
         this.setMuscles(muscles);
         this.setId(id);
+        this.setSubmitted(submitted);
     }
 
     getName(): string {
@@ -17,6 +19,13 @@ export default class Exercise {
     }
     getId(): string {
         return this.id;
+    }
+    getSubmitted(): boolean {
+        return this.submitted;
+    }
+
+    setSubmitted(submitted: boolean) {
+        this.submitted = submitted;
     }
 
     setName(name: string): void {

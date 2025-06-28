@@ -1,0 +1,37 @@
+
+/* .inputElements > * {
+    width: fit-content;
+    background-color: aqua;    
+    margin: auto;
+} */
+
+.inputElements {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: auto;
+
+}
+
+.inputElements > * > input {
+    height: 4vh;     
+    color: lightblue;   
+}
+
+select {
+    height: 4.7vh;
+    background: none;
+    color: lightblue;
+    border-color: lightblue;
+    
+}
+
+option {
+    /* background-color: lightblue; */
+    color: lightblue;
+    
+}
+
+.repMaxDiv { /* repetition maximum division */
+    margin-left: 30%;
+}

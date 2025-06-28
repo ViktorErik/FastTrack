@@ -1,7 +1,11 @@
-@import "./SignInView.css";
+@import "./HomeView.css";
 
 .card {
     
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     /*align-content: end;*/
     font-size:xx-large;       
     padding: 2%;
@@ -18,44 +22,49 @@
 
     border: solid;
     border-color: lightblue;
-    border-radius: 5%;
+    border-radius: 2%;
+
+}
+
+
+input {
+    background: transparent;
+    border: solid 1px;
+    border-color: lightblue;
+    color: lightblue;
+}
+input[type=submit] {
+    color: lightblue;
 }
 
 .exerciseList {
-    /* height: 100vh;         */
     display: flex;
-    align-items: flex-start;
-    flex-direction: column;        
+    flex-direction: column;
 }
 
 body {
     /*background-color: var(--bajs);*/ 
 
+    --bgcolor: rgb(30, 30, 60);
     background-color: rgb(30, 30, 60);
-    color: lightcyan;
+    color: lightblue;
             
     font-family: Arial, Helvetica, sans-serif;
+    
 } 
 
 button {
-    background-color: lightcyan;    
+    background-color: lightblue;    
     font-family: Arial, Helvetica, sans-serif;
     background-color: transparent;
-    color: lightcyan;
+    color: lightblue;
     border-radius: 2%;    
+    border: solid;
 
-    margin-top: 30px;
+    /* margin-top: 30px; */ /* COMMENTED OUT TO FIX HEADER*/
     align-self: center;
     font-size: xx-large;
     height: 10vh;
     width: 50%;
 
-}
-
-input {
-    width: 70%;
-}
-
-details {
-    margin: auto;    
 }

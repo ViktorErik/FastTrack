@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, setDoc} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, updateDoc} from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
@@ -13,13 +13,21 @@ export const addExerciseToDatabase = async (user: User): Promise<void> => {
     const docRef = await addDoc(collection(db, "users", user.uid, "exercises"), {});
     await setDoc(doc(db, "users", user.uid, "exercises", docRef.id), {    
         id: docRef.id,
-        name: "Bench press",
+        submitted: false,
     });    
 }
 
 
-export const deleteExerciseFromDatabase = async (user: User, exercise: Exercise): Promise<void> => {
-    await deleteDoc(doc(db, "users", user.uid, "exercises", exercise.id));
+export const deleteExerciseFromDatabase = async (user: User, exerciseId: string): Promise<void> => {
+    await deleteDoc(doc(db, "users", user.uid, "exercises", exerciseId));
+}
+
+export const submitNameToDatabase = async (user: User, exerciseId: string, name: string): Promise<void> => {
+    await updateDoc(doc(db, "users", user.uid, "exercises", exerciseId), {   
+        name: name,
+        submitted: true,
+    });  
+    console.log("HEJE");
 }
 
 
@@ -35,7 +43,7 @@ const useExercises = () => {
         const exercises: Array<Exercise> = [];
         userExercises.forEach((exercise) => {
             const exerciseData = exercise.data();            
-            exercises.push(new Exercise(exerciseData["id"], exerciseData["name"], exerciseData["muscles"]));                           
+            exercises.push(new Exercise(exerciseData["id"], exerciseData["name"], exerciseData["muscles"], exerciseData["submitted"]));                           
         });                        
         setExercises(exercises);     
         

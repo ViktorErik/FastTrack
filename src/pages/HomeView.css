@@ -1,0 +1,51 @@
+@import "./ExerciseListView.css";
+/* :root {
+    --bajs: blue;
+} */
+ 
+* { 
+    margin: 2px
+}
+
+.tabs {
+    
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.tabs > button {
+    font-size: large;
+    border: none;
+    border-bottom: solid;        
+}
+
+.active {
+    color: var(--bgcolor);
+    background-color: lightblue;
+    
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+header > * {
+    height: 8vh;    
+}
+
+header > input {
+    width: auto;
+}
+
+header > button { /* SIGN IN BUTTON*/
+    background-color: lightblue;
+    color: var(--bgcolor);
+    border-radius: 5%;
+    border: none;
+    width: 15vh;
+    height: 8vh;
+    font-size: medium;
+}

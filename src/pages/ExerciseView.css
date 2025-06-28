@@ -1,5 +1,49 @@
 .setList {
     display: flex;
-    align-items: flex-start;
+    /* align-items: flex-start; */
     flex-direction: column;      
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: auto;
+
+}
+
+.details > * {
+    align-self: center;
+    width: 100%;
+}
+
+.inputs {
+    display: flex;
+    
+}
+
+.details > * > input[type=text] {
+    height: 4vh;
+    width: 70%;
+}
+
+.details > * > input[type=submit] {
+    height: 4.5vh;
+    width: 30%;
+}
+
+.details > input {
+    width: 98.4%;
+}
+
+.card > * {
+    height: 4vh;
+}
+
+.checkMark {
+    width: 4vh;
+}
+
+.checkMark > * {
+    margin: auto;
 }
