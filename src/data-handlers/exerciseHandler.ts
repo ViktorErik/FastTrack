@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, updateDoc} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
@@ -19,7 +19,17 @@ export const addExerciseToDatabase = async (user: User): Promise<void> => {
 
 
 export const deleteExerciseFromDatabase = async (user: User, exerciseId: string): Promise<void> => {
+    
+    // Delete sets in exercise
+    const setRefs = await getDocs(collection(db, "users", user.uid, "exercises", exerciseId, "sets"));   
+    setRefs.forEach(async (set) => {
+        await deleteDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", set.id));    
+    });
+
+
+    // Delete exercise itself
     await deleteDoc(doc(db, "users", user.uid, "exercises", exerciseId));
+    
 }
 
 export const submitNameToDatabase = async (user: User, exerciseId: string, name: string): Promise<void> => {
@@ -27,7 +37,6 @@ export const submitNameToDatabase = async (user: User, exerciseId: string, name:
         name: name,
         submitted: true,
     });  
-    console.log("HEJE");
 }
 
 

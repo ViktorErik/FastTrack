@@ -2,28 +2,76 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { AuthContext } from "../providers/AuthProvider";
 import "./ExerciseView.css";
-import useSets, { addSetToDatabase } from "../data-handlers/setHandler";
+import useSets, { addSetToDatabase, deleteSetFromDatabase, submitSetToDatabase } from "../data-handlers/setHandler";
 import { Header } from "../navigation/Header";
 import Set from "../classes/Set";
 import { deleteExerciseFromDatabase, submitNameToDatabase } from "../data-handlers/exerciseHandler";
 import type { User } from "firebase/auth";
 
-import { ImCheckmark } from "react-icons/im";
+// import { ImCheckmark } from "react-icons/im";
 
 
 type SetCardProps = {
     set: Set;
+    user: User;
+    exerciseId: string;
+    refreshSets: () => void;
 }
 
 
-function SetCard({set} : SetCardProps) {
+function SetCard({ set, user, exerciseId, refreshSets } : SetCardProps) {
+    // let date: Date = new Date();
+
+    const setNumberRef = useRef<HTMLInputElement>(null);
+    const weightRef = useRef<HTMLInputElement>(null);
+    const repsRef = useRef<HTMLInputElement>(null);
+
+    const [, setSubmitted] = useState(set.getSubmitted());
+
+    async function submitSet() {
+        const setNumber = setNumberRef.current!.value;
+        const weight = weightRef.current!.value;
+        const reps = repsRef.current!.value;
+    
+
+        await submitSetToDatabase(user, exerciseId, new Set(set.getId(), setNumber, weight, reps, true));
+        setSubmitted(true);
+        set.setSubmitted(true);
+        set.setSetNumber(setNumber);
+        set.setWeight(weight);
+        set.setReps(reps);
+
+    }
+
+    async function deleteSet() {
+        await deleteSetFromDatabase(user, exerciseId, set.getId());
+        refreshSets();
+        
+    }
+
     return (
         <div className="card">
             {/* {set.getId()} */}
-            <input type="text" />
-            <input type="text" />
-            <input type="text" />
-            <button className="checkMark"><ImCheckmark size={"3vh"}/></button>
+            {/* <b>{date.getHours()}:{date.getMinutes()} {date.getDate()}/{date.getMonth() + 1} - {date.getFullYear()}</b> */}
+
+            {!set.getSubmitted() ?     
+                <>
+                    <input type="number" placeholder="Set #" ref={setNumberRef} />
+                    <input type="number" placeholder="Weight" ref={weightRef}/>
+                    <input type="number" placeholder="Reps" ref={repsRef}/>
+                    <button onClick={submitSet}><p>Submit</p></button>
+                </>            
+                :
+                <>
+                    <sub> {set.getDate()?.getHours()}:{set.getDate()?.getMinutes()} {set.getDate()?.getDate()}/{set.getDate()?.getMonth()!+1} - {set.getDate()?.getFullYear()}</sub>
+                    <p>Set #{set.getSetNumber()},</p>
+                    <p>Weight: {set.getWeight()},</p>
+                    <p>Reps: {set.getReps()}</p>
+                </>
+            }
+
+            <button onClick={deleteSet}>Delete Set</button>
+                    
         </div>
     )
 }
@@ -51,6 +99,9 @@ const ExerciseView = () => {
     })    
     
     async function addSet(exerciseId: string): Promise<void> {
+        for (let set of sets) {
+            if (!set.getSubmitted()) return;
+        }
         await addSetToDatabase(auth!.curUser!, exerciseId);
         getSets();
     }
@@ -87,7 +138,7 @@ const ExerciseView = () => {
             <div className="setList">
 
                 {sets.map((set: Set) => (               
-                    <SetCard key={set.getId()} set={set}/>
+                    <SetCard key={set.getId()} set={set} exerciseId={exerciseId!} user={auth?.curUser!} refreshSets={getSets}/>
                 ))}  
 
                 <button onClick={ () => addSet(exerciseId!) }>

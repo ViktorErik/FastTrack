@@ -44,7 +44,7 @@ function ExerciseCard({ exercise, user }: ExerciseCardProps) {
         <button className="card" onClick={
             exercise.getSubmitted() ? () => navigate(exercise.getId(), {state: {exerciseName: exercise.getName()}}) :
             void(0)
-            }>                        
+        }>                        
             {exercise.getSubmitted() ? 
             // <Link to={exercise.getId()}>{exercise.getName()}</Link> 
             exercise.getName()

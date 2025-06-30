@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import type { User } from "firebase/auth";
 import Set from "../classes/Set";
@@ -7,13 +7,35 @@ import { AuthContext } from "../providers/AuthProvider";
 
 
 export const addSetToDatabase = async (user: User, exerciseId: string): Promise<void> => {
-    console.log(exerciseId);
+    const date = new Date();
     const docRef = await addDoc(collection(db, "users", user.uid, "exercises", exerciseId, "sets"), {});
     await setDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", docRef.id), {    
         id: docRef.id,
-        
+        submitted: false, 
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        day: date.getDate(),
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+
     });
 }
+
+export const deleteSetFromDatabase = async (user: User, exerciseId: string, setId: string): Promise<void> => {
+    await deleteDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", setId));    
+}
+
+export const submitSetToDatabase = async (user: User, exerciseId: string, set: Set) : Promise<void> => {
+    await updateDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", set.getId()), {   
+        setNumber: set.getSetNumber(),
+        weight: set.getWeight(),
+        reps: set.getReps(),
+        submitted: true,
+        });  
+}
+
+
+
 
 const useSets = (exerciseId: string) => {
     const auth = useContext(AuthContext);
@@ -26,8 +48,10 @@ const useSets = (exerciseId: string) => {
 
         const sets: Array<Set> = [];
         userSets.forEach((set) => {
-            const setData = set.data();            
-            sets.push(new Set(setData["id"], setData["setNumber"], setData["weight"], setData["reps"]));                           
+            const setData = set.data();      
+            const date: Date = new Date(Number(setData["year"]), Number(setData["month"]), Number(setData["day"]), Number(setData["hour"]), Number(setData["minute"]));      
+            sets.push(new Set(setData["id"], setData["setNumber"], setData["weight"], setData["reps"], setData["submitted"], date));      
+        
         });                        
         setSets(sets);     
         

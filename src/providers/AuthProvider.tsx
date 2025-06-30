@@ -21,8 +21,7 @@ export const AuthProvider = ({children} : {children: ReactNode}) => {
     const [curUser, setCurUser] = useState<User | null>(null);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            console.log("onAuthStateChanged:", user);
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {            
 
         setCurUser(user);
         });
@@ -39,7 +38,6 @@ export const AuthProvider = ({children} : {children: ReactNode}) => {
     }
 
     const signOutUser = async () => {
-        console.log("HEJ");
         await signOut(auth);
     }
 

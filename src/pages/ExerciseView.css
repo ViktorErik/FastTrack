@@ -37,13 +37,24 @@
 }
 
 .card > * {
-    height: 4vh;
+    height: 2rem;
+
 }
 
-.checkMark {
-    width: 4vh;
+.card > input[type=text] {
+    width: 5rem;
 }
 
-.checkMark > * {
-    margin: auto;
+.card > button {
+    width: 5rem;
+    font-size: small;        
+}
+
+.card > p {
+    font-size: 2rem;
+}
+
+.card > sub {
+    font-size: small;
+    
 }
