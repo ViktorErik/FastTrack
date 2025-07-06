@@ -17,7 +17,7 @@ export const addSetToDatabase = async (user: User, exerciseId: string): Promise<
         day: date.getDate(),
         hour: date.getHours(),
         minute: date.getMinutes(),
-
+        second: date.getSeconds(),
     });
 }
 
@@ -35,6 +35,53 @@ export const submitSetToDatabase = async (user: User, exerciseId: string, set: S
 }
 
 
+function swap(sets: Set[], i: number, j: number) {
+    let temp: Set = sets[i];
+    sets[i] = sets[j];
+    sets[j] = temp;
+}
+
+// Sort sets. Key is the date
+const sortSets = (sets: Set[]): Set[] => {
+    for (let i = 0; i < sets.length; i++) {
+        for (let j = i; j < sets.length; j++) {
+
+            if (
+                sets[j].getDate()?.getFullYear()! < sets[i].getDate()?.getFullYear()!) swap(sets, i, j);
+
+            else if (
+                sets[j].getDate()?.getFullYear()! == sets[i].getDate()?.getFullYear()! &&
+                sets[j].getDate()?.getMonth()! < sets[i].getDate()?.getMonth()!) swap(sets, i, j);
+
+            else if (
+                sets[j].getDate()?.getFullYear()! == sets[i].getDate()?.getFullYear()! && 
+                sets[j].getDate()?.getMonth()! == sets[i].getDate()?.getMonth()! &&
+                sets[j].getDate()?.getDate()! < sets[i].getDate()?.getDate()!) swap(sets, i, j);
+
+            else if (
+                sets[j].getDate()?.getFullYear()! == sets[i].getDate()?.getFullYear()! && 
+                sets[j].getDate()?.getMonth()! == sets[i].getDate()?.getMonth()! &&
+                sets[j].getDate()?.getDate()! == sets[i].getDate()?.getDate()! &&
+                sets[j].getDate()?.getHours()! < sets[i].getDate()?.getHours()!) swap(sets, i, j);
+
+            else if (
+                sets[j].getDate()?.getFullYear()! == sets[i].getDate()?.getFullYear()! && 
+                sets[j].getDate()?.getMonth()! == sets[i].getDate()?.getMonth()! &&
+                sets[j].getDate()?.getDate()! == sets[i].getDate()?.getDate()! &&
+                sets[j].getDate()?.getHours()! == sets[i].getDate()?.getHours()! && 
+                sets[j].getDate()?.getMinutes()! < sets[i].getDate()?.getMinutes()!) swap(sets, i, j);
+                       
+            else if (
+                sets[j].getDate()?.getFullYear()! == sets[i].getDate()?.getFullYear()! && 
+                sets[j].getDate()?.getMonth()! == sets[i].getDate()?.getMonth()! &&
+                sets[j].getDate()?.getDate()! == sets[i].getDate()?.getDate()! &&
+                sets[j].getDate()?.getHours()! == sets[i].getDate()?.getHours()! && 
+                sets[j].getDate()?.getMinutes()! == sets[i].getDate()?.getMinutes()! &&
+                sets[j].getDate()?.getSeconds()! < sets[i].getDate()?.getSeconds()!) swap(sets, i, j);
+        }
+    }
+    return sets;
+}
 
 
 const useSets = (exerciseId: string) => {
@@ -46,13 +93,23 @@ const useSets = (exerciseId: string) => {
     async function getSets() {
         const userSets = await getDocs(collection(db, "users", auth!.curUser!.uid, "exercises", exerciseId, "sets"));   
 
-        const sets: Array<Set> = [];
+        let sets: Array<Set> = [];
         userSets.forEach((set) => {
             const setData = set.data();      
-            const date: Date = new Date(Number(setData["year"]), Number(setData["month"]), Number(setData["day"]), Number(setData["hour"]), Number(setData["minute"]));      
+            // const date: Date = new Date(Number(setData["year"]), Number(setData["month"]), Number(setData["day"]), Number(setData["hour"]), Number(setData["minute"]), Number(setData["second"]));      
+            const pad = (x: number): string => x.toString().padStart(2, "0");
+            const date: Date = new Date(`\
+${pad(setData["year"])}-\
+${pad(setData["month"]+1)}-\
+${pad(setData["day"])}T\
+${pad(setData["hour"])}:\
+${pad(setData["minute"])}:\
+${pad(setData["second"])}\
+`);
             sets.push(new Set(setData["id"], setData["setNumber"], setData["weight"], setData["reps"], setData["submitted"], date));      
         
-        });                        
+        });               
+        sets = sortSets(sets);         
         setSets(sets);     
         
     }

@@ -22,6 +22,10 @@
     
 }
 
+.details > button {
+    font-size: x-large;
+}
+
 .details > * > input[type=text] {
     height: 4vh;
     width: 70%;
@@ -41,17 +45,15 @@
 
 }
 
-.card > input[type=text] {
-    width: 5rem;
-}
-
+.card > input,
 .card > button {
-    width: 5rem;
-    font-size: small;        
+    width: 20%;
+    font-size: small;      
 }
 
-.card > p {
-    font-size: 2rem;
+.card > p,
+.card > sub {
+    font-size: 50%;
 }
 
 .card > sub {
