@@ -7,7 +7,7 @@
     justify-content: center;
 
     /*align-content: end;*/
-    font-size:xx-large;       
+    font-size: x-large;       
     padding: 2%;
     /* display: inline-block;     */
     /* max-width: 100%; */
@@ -33,9 +33,9 @@ input {
     border-color: lightblue;
     color: lightblue;
 }
-input[type=submit] {
+/* input[type=submit] {
     color: lightblue;
-}
+} */
 
 .exerciseList {
     display: flex;
@@ -61,10 +61,17 @@ button {
     border-radius: 2%;    
     border: solid;
 
-    /* margin-top: 30px; */ /* COMMENTED OUT TO FIX HEADER*/
+    /* margin-top: 30px; */ /* COMMENTED OUT TO FIX HEADER */
     align-self: center;
-    font-size: xx-large;
+    font-size: x-large;
     height: 10vh;
-    width: 50%;
+    /* width: 50%; */
+
+}
+
+
+.addButton {    
+    background-color: lightblue;
+    color: var(--bgcolor);  
 
 }

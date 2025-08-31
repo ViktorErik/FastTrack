@@ -3,12 +3,20 @@ export default class Exercise {
     muscles: string = "";
     id!: string;
     submitted: boolean = false;
+    description: string = "";
+    orderNumber: number = 1;
 
-    constructor(id: string, name: string = "", muscles: string = "", submitted: boolean = false) {
+    constructor(id: string, name: string = "", muscles: string = "", submitted: boolean = false, description: string = "", orderNumber: number = 1) {
         this.setName(name);
         this.setMuscles(muscles);
         this.setId(id);
         this.setSubmitted(submitted);
+        this.setDescription(description);
+        this.setOrderNumber(orderNumber);
+    }
+
+    getOrderNumber(): number {
+        return this.orderNumber;
     }
 
     getName(): string {
@@ -23,9 +31,20 @@ export default class Exercise {
     getSubmitted(): boolean {
         return this.submitted;
     }
+    getDescription(): string {
+        return this.description;
+    }
+
+    setDescription(description: string) {
+        this.description = description;
+    }
 
     setSubmitted(submitted: boolean) {
         this.submitted = submitted;
+    }
+
+    setOrderNumber(orderNumber: number) {
+        this.orderNumber = orderNumber;
     }
 
     setName(name: string): void {

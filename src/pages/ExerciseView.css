@@ -22,9 +22,11 @@
     
 }
 
-.details > button {
-    font-size: x-large;
-}
+/* .deleteButton {
+    margin-top: 10px;
+    font-size: large;
+    height: 7vh;
+} */
 
 .details > * > input[type=text] {
     height: 4vh;
@@ -40,23 +42,85 @@
     width: 98.4%;
 }
 
-.card > * {
-    height: 2rem;
 
+.card > button {
+    /* font-size: x-small; */
+    /* height: 50%; */
 }
 
-.card > input,
-.card > button {
-    width: 20%;
+
+.card > * {
+    /* width: 20%; */
     font-size: small;      
 }
 
-.card > p,
 .card > sub {
-    font-size: 50%;
+    font-size: x-small;
+    
 }
 
-.card > sub {
-    font-size: small;
+.timeInputs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.setInputs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.deleting {
+    display: flex;
+    flex-direction: column; 
+    min-width: 0;   
+    /* margin: 0;
+    padding: 0;  */
+    width: 100%;
     
+}
+
+.deleting > * {    
+    font-size: small;    
+    height: 25%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.notDeleting {
+    height: 50%;
+    width: 30%;
+}
+
+.card {
+    display: flex;
+    width: 90%;
+    height: auto;
+}
+
+.card > div {
+    
+    min-width: 0;
+}
+
+.timeInputs, .setInputs {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.timeInputs input, .setInputs input {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+.notDeleting button {
+    
+}
+
+.tabs > * {
+    width: 50%;
 }

@@ -4,8 +4,10 @@ import type { User } from "firebase/auth";
 import Set from "../classes/Set";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
+import Note from "../classes/Note";
 
 
+// Works for both sets and notes
 export const addSetToDatabase = async (user: User, exerciseId: string): Promise<void> => {
     const date = new Date();
     const docRef = await addDoc(collection(db, "users", user.uid, "exercises", exerciseId, "sets"), {});
@@ -21,28 +23,50 @@ export const addSetToDatabase = async (user: User, exerciseId: string): Promise<
     });
 }
 
+
 export const deleteSetFromDatabase = async (user: User, exerciseId: string, setId: string): Promise<void> => {
     await deleteDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", setId));    
 }
 
 export const submitSetToDatabase = async (user: User, exerciseId: string, set: Set) : Promise<void> => {
-    await updateDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", set.getId()), {   
+    const docRef = await addDoc(collection(db, "users", user.uid, "exercises", exerciseId, "sets"), {});
+    await setDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", docRef.id), {   
+        id: docRef.id,
         setNumber: set.getSetNumber(),
         weight: set.getWeight(),
         reps: set.getReps(),
         submitted: true,
-        });  
+        year:   set.getDate()!.getFullYear(),
+        month:  set.getDate()!.getMonth(),
+        day:    set.getDate()!.getDate(),
+        hour:   set.getDate()!.getHours(),
+        minute: set.getDate()!.getMinutes(),
+        second: set.getDate()!.getSeconds(),
+        });      
+}
+
+export const submitNoteToDatabase = async (user: User, exerciseId: string, note: Note) : Promise<void> => {
+    await updateDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", note.getId()), {   
+        text: note.getText(),
+        submitted: true,
+        year:   note.getDate()!.getFullYear(),
+        month:  note.getDate()!.getMonth(),
+        day:    note.getDate()!.getDate(),
+        hour:   note.getDate()!.getHours(),
+        minute: note.getDate()!.getMinutes(),
+        second: note.getDate()!.getSeconds(),
+        });      
 }
 
 
-function swap(sets: Set[], i: number, j: number) {
-    let temp: Set = sets[i];
+function swap(sets: (Set | Note)[], i: number, j: number) {
+    let temp: Set | Note = sets[i];
     sets[i] = sets[j];
     sets[j] = temp;
 }
 
 // Sort sets. Key is the date
-const sortSets = (sets: Set[]): Set[] => {
+const sortSets = (sets: (Set | Note)[]): (Set | Note)[] => {
     for (let i = 0; i < sets.length; i++) {
         for (let j = i; j < sets.length; j++) {
 
@@ -87,17 +111,20 @@ const sortSets = (sets: Set[]): Set[] => {
 const useSets = (exerciseId: string) => {
     const auth = useContext(AuthContext);
     // const [user, setUser] = useState<User | null>(null);
-    const [ sets, setSets ] = useState<Set[]>([]);
+    const [ sets, setSets ] = useState<(Note | Set)[]>([]);
     
 
     async function getSets() {
         const userSets = await getDocs(collection(db, "users", auth!.curUser!.uid, "exercises", exerciseId, "sets"));   
 
-        let sets: Array<Set> = [];
+        let sets: Array<Set | Note> = [];
         userSets.forEach((set) => {
             const setData = set.data();      
             // const date: Date = new Date(Number(setData["year"]), Number(setData["month"]), Number(setData["day"]), Number(setData["hour"]), Number(setData["minute"]), Number(setData["second"]));      
-            const pad = (x: number): string => x.toString().padStart(2, "0");
+            const pad = (x: number) => {                
+                try { return x.toString().padStart(2, "0"); }
+                catch {}
+            }
             const date: Date = new Date(`\
 ${pad(setData["year"])}-\
 ${pad(setData["month"]+1)}-\
@@ -106,6 +133,8 @@ ${pad(setData["hour"])}:\
 ${pad(setData["minute"])}:\
 ${pad(setData["second"])}\
 `);
+            // KOLLA OM SET ELLER NOTE, SEDAN PUSHA IN I SETS, får nog ha ett field i db för set eller note
+            
             sets.push(new Set(setData["id"], setData["setNumber"], setData["weight"], setData["reps"], setData["submitted"], date));      
         
         });               

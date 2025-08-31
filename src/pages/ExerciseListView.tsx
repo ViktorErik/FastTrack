@@ -6,6 +6,7 @@ import "./ExerciseListView.css";
 
 import Exercise from "../classes/Exercise";
 import type { User } from "firebase/auth";
+import { lengthCheck } from "./ExerciseView";
 
 
 
@@ -50,7 +51,7 @@ function ExerciseCard({ exercise, user }: ExerciseCardProps) {
             exercise.getName()
             :
             <>
-                <input type="text" placeholder="Enter Name of Exercise" defaultValue={exercise.getName()} ref={inputRef}/>
+                <input type="text" placeholder="Enter Name of Exercise" defaultValue={exercise.getName()} ref={inputRef} onChange={() => lengthCheck(inputRef, 50)}/>
                 <input type="submit" value="Submit" onClick={submitName}/>
             </>
             }
@@ -92,7 +93,7 @@ export const ExerciseListView = () => {
             : <div>Sign in to view your exercises.</div>}     
         
             {auth?.curUser ?
-            <button onClick={ addExercise }>
+            <button className="addButton" onClick={ addExercise }>
                 Add Exercise 
             </button>
             : ""}
