@@ -1,18 +1,18 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { AuthContext } from "../providers/AuthProvider";
 import "./ExerciseView.css";
-import useSets, { addSetToDatabase, deleteSetFromDatabase, submitNoteToDatabase, submitSetToDatabase } from "../data-handlers/setHandler";
+import useSets, { deleteSetFromDatabase, submitNoteToDatabase, submitSetToDatabase } from "../data-handlers/setHandler";
 import { Header } from "../navigation/Header";
 import Set from "../classes/Set";
 import { deleteExerciseFromDatabase, getDescription, submitDescriptionToDatabase, submitNameToDatabase } from "../data-handlers/exerciseHandler";
 import type { User } from "firebase/auth";
 import Note from "../classes/Note"
 import { useNewSetState } from "../providers/NewSetProvider";
+// import { SiNuke } from "react-icons/si";
 
 // import { ImCheckmark } from "react-icons/im";
 
-const newSetContext = createContext(null);
 
 export function lengthCheck(inputRef: any, maxLength: number) {
     const newInput = inputRef.current?.value;        
@@ -36,12 +36,17 @@ type NoteCardProps = {
 // Notes are stored as sets so that I can sort by date easier etc
 function NoteCard({ user, exerciseId, refreshSets, note }: NoteCardProps) {
 
-    const textRef = useRef<HTMLInputElement>(null);
+    const textRef = useRef<HTMLTextAreaElement>(null);
     const yearRef = useRef<HTMLInputElement>(null);
     const monthRef = useRef<HTMLInputElement>(null);
     const dayRef = useRef<HTMLInputElement>(null);
     const hourRef = useRef<HTMLInputElement>(null);
     const minuteRef = useRef<HTMLInputElement>(null);
+    
+
+    const [, setSubmitted] = useState(note.getSubmitted());
+    const [deletePressed, setDeletePressed] = useState(false);
+    const {setNewNoteState } = useNewSetState();
 
 
     async function submitNote() {
@@ -51,10 +56,7 @@ function NoteCard({ user, exerciseId, refreshSets, note }: NoteCardProps) {
         const month  = pad(monthRef.current!.value)
         const day    = pad(dayRef.current!.value)
         const hour   = pad(hourRef.current!.value)
-        const minute = pad(minuteRef.current!.value)
-
-        const [, setSubmitted] = useState(note.getSubmitted());
-        const [deletePressed, setDeletePressed] = useState(false);
+        const minute = pad(minuteRef.current!.value)                    
         
         
         const date: Date = new Date(`\
@@ -82,9 +84,52 @@ ${pad(minute)}\
     }
     
     return (
-        <>
-        <p>{note.getText()}</p>
-        </>
+        <div className="card">            
+
+            {!note.getSubmitted() ?     
+                <div>
+                    <form className="timeInputs">
+                        <input type="number" onChange={() => lengthCheck(yearRef, 4)} ref={yearRef} placeholder="Year" defaultValue={pad(note.getDate()?.getFullYear()!)}/>
+                        <input type="number" onChange={() => lengthCheck(monthRef, 2)} ref={monthRef} placeholder="Month" defaultValue={pad(note.getDate()?.getMonth()!+1)}/>
+                        <input type="number" onChange={() => lengthCheck(dayRef, 2)} ref={dayRef} placeholder="Day" defaultValue={pad(note.getDate()?.getDate()!)}/>
+                        <input type="number" onChange={() => lengthCheck(hourRef, 2)} ref={hourRef} placeholder="Hour" defaultValue={pad(note.getDate()?.getHours()!)}/>
+                        <input type="number" onChange={() => lengthCheck(minuteRef, 2)} ref={minuteRef} placeholder="Minute" defaultValue={pad(note.getDate()?.getMinutes()!)}/>
+                    </form>
+
+                    <form className="noteInputs">
+                        <textarea placeholder="Shat my pants last set" ref={textRef} onChange={() => lengthCheck(textRef, 200)}/>
+                        <button type="button" onClick={() => {
+                            setNewNoteState(false);
+                            submitNote();
+                            }}>
+                            <p>Submit</p>
+                        </button>
+                    </form>
+                </div>            
+                :
+                <>
+                    <p>{note.getText()}</p>
+                    <sub> {pad(note.getDate()?.getHours()!)}:{pad(note.getDate()?.getMinutes()!)} {pad(note.getDate()?.getDate()!)}/{pad(note.getDate()?.getMonth()!+1)} - {pad(note.getDate()?.getFullYear()!)}&nbsp;&nbsp;&nbsp;</sub>                    
+                </>
+            }
+
+            {deletePressed ?
+
+                <div className="deleting">
+                    <button onClick={() => {
+                        setNewNoteState(false);
+                        deleteNote()}}>
+                        Confirm</button>
+                    <button onClick={() => setDeletePressed(false)}>Cancel</button>
+                </div>
+                :                
+                <button className="notDeleting" onClick={() => {
+                    setDeletePressed(true)}}>
+                    Delete Note
+                </button>
+            }
+                    
+        </div>
     )
 
 }
@@ -113,7 +158,8 @@ function SetCard({ set, user, exerciseId, refreshSets } : SetCardProps) {
 
     const [, setSubmitted] = useState(set.getSubmitted());
     const [deletePressed, setDeletePressed] = useState(false);
-    const { newSetState, setNewSetState } = useNewSetState();
+    const {setNewSetState } = useNewSetState();
+    // const {newNoteState, setNewNoteState } = useNewSetState();
 
     
 
@@ -225,6 +271,7 @@ const ExerciseView = () => {
     const navigate = useNavigate();
     const { sets, getSets } = useSets(exerciseId!);
     const { newSetState, setNewSetState } = useNewSetState();
+    const {newNoteState, setNewNoteState } = useNewSetState();
     
         
 
@@ -314,14 +361,20 @@ const ExerciseView = () => {
                 <></>
                 }
 
+                {newNoteState?
+                <NoteCard key={"2"} user={auth?.curUser!} exerciseId={exerciseId!} refreshSets={getSets} note={new Note("", new Date(), "2", false)}/>
+                :
+                <></>
+                }
+
                 <button className="addButton" onClick={() => setNewSetState(true)}>
                     Add Set
                 </button>
 
 
-                {/* <button className="addButton" onClick={ () => addSet(exerciseId!)}>
+                <button className="addButton" onClick={ () => setNewNoteState(true)}>
                     Add Note
-                </button> */}
+                </button>
             </div>
             }
 

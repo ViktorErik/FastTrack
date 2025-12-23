@@ -8,20 +8,19 @@ import Note from "../classes/Note";
 
 
 // Works for both sets and notes
-export const addSetToDatabase = async (user: User, exerciseId: string): Promise<void> => {
-    const date = new Date();
-    const docRef = await addDoc(collection(db, "users", user.uid, "exercises", exerciseId, "sets"), {});
-    await setDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", docRef.id), {    
-        id: docRef.id,
-        submitted: false, 
-        year: date.getFullYear(),
-        month: date.getMonth(),
-        day: date.getDate(),
-        hour: date.getHours(),
-        minute: date.getMinutes(),
-        second: date.getSeconds(),
-    });
-}
+// export const addSetToDatabase = async (user: User, exerciseId: string): Promise<void> => {
+//     const date = new Date();
+//     const docRef = await addDoc(collection(db, "users", user.uid, "exercises", exerciseId, "sets"), {});
+//     await setDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", docRef.id), {    
+//         id: docRef.id,        
+//         year: date.getFullYear(),
+//         month: date.getMonth(),
+//         day: date.getDate(),
+//         hour: date.getHours(),
+//         minute: date.getMinutes(),
+//         second: date.getSeconds(),
+//     });
+// }
 
 
 export const deleteSetFromDatabase = async (user: User, exerciseId: string, setId: string): Promise<void> => {
@@ -29,32 +28,32 @@ export const deleteSetFromDatabase = async (user: User, exerciseId: string, setI
 }
 
 export const submitSetToDatabase = async (user: User, exerciseId: string, set: Set) : Promise<void> => {
-    const docRef = await addDoc(collection(db, "users", user.uid, "exercises", exerciseId, "sets"), {});
-    await setDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", docRef.id), {   
+    const docRef = await addDoc(collection(db, "users", user.uid, "exercises", exerciseId, "sets"), {});    
+    await setDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", docRef.id), {           
         id: docRef.id,
         setNumber: set.getSetNumber(),
         weight: set.getWeight(),
-        reps: set.getReps(),
-        submitted: true,
+        reps: set.getReps(),        
         year:   set.getDate()!.getFullYear(),
         month:  set.getDate()!.getMonth(),
         day:    set.getDate()!.getDate(),
         hour:   set.getDate()!.getHours(),
         minute: set.getDate()!.getMinutes(),
-        second: set.getDate()!.getSeconds(),
+        second: new Date().getSeconds(),
         });      
 }
 
 export const submitNoteToDatabase = async (user: User, exerciseId: string, note: Note) : Promise<void> => {
-    await updateDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", note.getId()), {   
-        text: note.getText(),
-        submitted: true,
+    const docRef = await addDoc(collection(db, "users", user.uid, "exercises", exerciseId, "sets"), {});    
+    await updateDoc(doc(db, "users", user.uid, "exercises", exerciseId, "sets", docRef.id), {   
+        id: docRef.id,
+        text: note.getText(),        
         year:   note.getDate()!.getFullYear(),
         month:  note.getDate()!.getMonth(),
         day:    note.getDate()!.getDate(),
         hour:   note.getDate()!.getHours(),
         minute: note.getDate()!.getMinutes(),
-        second: note.getDate()!.getSeconds(),
+        second: new Date().getSeconds(),
         });      
 }
 
@@ -134,8 +133,12 @@ ${pad(setData["minute"])}:\
 ${pad(setData["second"])}\
 `);
             // KOLLA OM SET ELLER NOTE, SEDAN PUSHA IN I SETS, får nog ha ett field i db för set eller note
-            
-            sets.push(new Set(setData["id"], setData["setNumber"], setData["weight"], setData["reps"], setData["submitted"], date));      
+            if (setData["text"] || setData["text"] == "") {
+                sets.push(new Note(setData["text"], date, setData["id"], true))                
+            }
+            else {
+                sets.push(new Set(setData["id"], setData["setNumber"], setData["weight"], setData["reps"], true, date));      
+            }
         
         });               
         sets = sortSets(sets);         

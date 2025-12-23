@@ -43,10 +43,10 @@
 }
 
 
-.card > button {
+/* .card > button { */
     /* font-size: x-small; */
     /* height: 50%; */
-}
+/* } */
 
 
 .card > * {
@@ -117,10 +117,21 @@
     min-height: 0;
 }
 
-.notDeleting button {
+/* .notDeleting button {
     
-}
+} */
 
 .tabs > * {
     width: 50%;
+}
+
+.noteInputs {
+    width: 100%;        
+    
+    
+}
+
+
+p {
+    word-break: break-all;
 }
